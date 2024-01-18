@@ -1,208 +1,246 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do 리스트</title>
+    <title>Calendar</title>
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-
+            width: 100vw;
+            height: 100vh;
         }
 
-        #main { 
-            padding: 20%;
-            padding-left: 20%;
-            padding-right: 30%;
+        .main {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-        
-        #list {
-            border: solid;
-            border-radius: 2cap;
-            text-align: center;
+
+        .calendarHead {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            font-size: 45px;
-            margin: 0 auto;
-            width: 100%;
-            height: 30%;
-            padding: 10% 20%;
         }
 
-        .array{
-            width: 20%;
-            background-color: white;
+        .calendarDays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
             border: solid;
-            font-weight: bold;
-            padding : 2%;
-            margin: 2%;
         }
 
-        .priority{
-            background-color: white;
+        .day {
+            padding: 5px;
+            text-align: center;
             border: solid;
-            font-weight: bold;
-            border-radius: 2cap;
-        }
-        #inputTodo {
-            border-bottom: solid;
-            margin-bottom: 20px;
         }
 
-        #inputDo{
-            border: hidden;
-            
-            
+        .calendarDate {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 5px;
         }
 
-        .todo {
-            margin-bottom: 10px;
+        .date {
+            cursor: pointer;
+            padding: 5px;
+            position: relative;
         }
 
-        .vhighp {
-            color: blueviolet;
-        }
-
-        .highp {
-            color: red;
-        }
-
-        .normalp {
-            color: orange;
-        }
-
-        .lowp {
-            color: green;
-        }
-
-        .completed-todo{
-            text-decoration: line-through;
-            opacity: 0.7;
-        }
-
-        #todoList{
+        .memo {
+            margin-top: 20px;
             border: solid;
-            font-size: 10px;
-            width:100%;
-            text-align: left;
+            display: none;
+        }
+
+        .memo-buttons {
+            margin-top: 10px;
+        }
+
+        .selected {
+            border: 2px solid red;
         }
     </style>
 </head>
 <body>
-    <div id="main">
-        <div id="list">TO-DO LIST
-            <br>
-            <div id="arrayBtn">
-                <button id="allBtn" class="array" onclick="filterTodo('all')" >전체</button>
-                <button id="completeBtn" class="array" onclick="filterTodo('complete')">완료</button>
-                <button id="uncompleteBtn" class="array" onclick="filterTodo('uncomplete')">미완료</button>
-            </div>
-            <div id="inputTodo">
-                <input type="text" id="inputDo" placeholder="할 일을 작성해주세요."/>
-                    <button id="lowBtn" class="priority" onclick="selectPriority('낮음', this)">낮음</button>
-                    <button id="normalBtn" class="priority" onclick="selectPriority('보통', this)">보통</button>
-                    <button id="highBtn" class="priority" onclick="selectPriority('높음', this)">높음</button>
-                    <button id="vhighBtn" class="priority" onclick="selectPriority('아주높음', this)">아주높음</button>
-                    <button id="addBtn" onclick="addList()">추가</button>
-            </div>
-            <div id="todoList"></div>
+    <div class="main">
+        <div class="calendarHead">
+            <button id="prevBtn">이전</button>
+            <h1 id="YearMonth"></h1>
+            <button id="nextBtn">다음</button>
+        </div>
+        <div class="calendarDays">
+            <div class="day">일</div>
+            <div class="day">월</div>
+            <div class="day">화</div>
+            <div class="day">수</div>
+            <div class="day">목</div>
+            <div class="day">금</div>
+            <div class="day">토</div>
+        </div>
+        <div class="calendarDate" id="calendarDates"></div>
+    </div>
+
+    <div class="memo" id="memoBox">
+        <textarea id="memoText" placeholder="메모를 입력하세요."></textarea>
+        <div class="memo-buttons">
+            <button id="saveBtn">저장</button>
+            <button id="deleteBtn">삭제</button>
+            <button id="exitBtn">나가기</button>
         </div>
     </div>
 
     <script>
-        let selectedButton = null;
-        let selectedPriority = "(우선순위없음)";
+        const calendarDates = document.getElementById("calendarDates");
+        const YearMonth = document.getElementById("YearMonth");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const memoBox = document.getElementById("memoBox");
+        const memoText = document.getElementById("memoText");
+        const saveBtn = document.getElementById("saveBtn");
+        const deleteBtn = document.getElementById("deleteBtn");
+        const exitBtn = document.getElementById("exitBtn");
 
-        function selectPriority(p, btn){
-            selectedPriority = p;
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
 
-            if (selectedButton) {
-            selectedButton.style.backgroundColor = "white";
+        let selectedDate = null;
+
+        function createCalendar() {
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            const datesOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const startDayOfMonth = firstDayOfMonth.getDay();
+            YearMonth.textContent = `${currentYear}년 ${currentMonth + 1}월`;
+
+            calendarDates.innerHTML = "";
+
+            for (let i = 0; i < startDayOfMonth; i++) {
+                const emptyDate = document.createElement("div");
+                emptyDate.classList.add("date", "empty");
+                calendarDates.appendChild(emptyDate);
             }
 
-            selectedButton = btn;
-            if(p === '낮음')
-                selectedButton.style.backgroundColor = "green";
-            else if(p === '보통')
-                selectedButton.style.backgroundColor = "orange";
-            else if(p === '높음')
-                selectedButton.style.backgroundColor = "red";
-            else if(p === '아주높음')
-                selectedButton.style.backgroundColor = "blueviolet";
-        }
+            for (let i = 1; i <= datesOfMonth; i++) {
+                const dateElement = document.createElement("div");
+                dateElement.classList.add("date");
+                dateElement.textContent = i;
+                calendarDates.appendChild(dateElement);
 
-        function addList() {
-            const todoInput = document.getElementById("inputDo").value;
-
-            if(todoInput.trim() === "") {
-                alert("할 일을 입력하세요.");
-                return;
+                dateElement.addEventListener("click", function () {
+                    resetSelectedDate();
+                    selectedDate = new Date(currentYear, currentMonth, i);
+                    showMemoBox();
+                    showMemoData(selectedDate);
+                    dateElement.classList.add("selected");
+                });
             }
-
-            if (selectedButton) {
-                selectedButton.style.backgroundColor = "white";
-                selectedButton = null;
-            }   
-            const todoList = document.getElementById("todoList");
-
-            const todoElement = document.createElement("div");
-            todoElement.classList.add("todo");
-
-            const priorityClass = getPriorityClass(selectedPriority);
-            todoElement.innerHTML = 
-                `<input type="checkbox" onclick="toggleTodoStatus(this)"> ${todoInput}
-                <span class="${priorityClass}">${selectedPriority}</span>
-                <button onclick="deleteTodo(this)">삭제</button>`;
-            
-            todoList.appendChild(todoElement);
-            selectedPriority = "(우선순위없음)";
         }
 
-        function toggleTodoStatus(checkbox){
-            const todoElement = checkbox.parentElement;
-            todoElement.classList.toggle("completed-todo", checkbox.checked);
-
+        function resetSelectedDate() {
+            const selected = document.querySelector('.date.selected');
+            if (selected) {
+                selected.classList.remove("selected");
+            }
         }
 
-        function deleteTodo(deleteBtn){
-            const todoElement = deleteBtn.parentElement;
-            todoElement.remove();
+        function showMemoBox() {
+            memoBox.style.display = "block";
         }
 
-        function filterTodo(type){
-            const todos = document.querySelectorAll(".todo");
+        function showMemoData(date) {
+            const memoData = getMemoData();
+            const memoForDate = memoData[date.toISOString()];
+            memoText.value = memoForDate || "";
+        }
 
-            todos.forEach(todo => {
-                if(type ==="all") {
-                    todo.style.display = "block";
-                } else if(type ==="complete") {
-                    todo.style.display = todo.classList.contains("completed-todo") ? "block" : "none";
-                } else if(type === "uncomplete") {
-                    todo.style.display = todo.classList.contains("completed-todo") ? "none" : "block";
+        function saveMemo() {
+            const memoData = getMemoData();
+            memoData[selectedDate.toISOString()] = memoText.value;
+            updateMemoData(memoData);
+            markMemo(selectedDate);
+        }
+
+        function deleteMemo() {
+            const memoData = getMemoData();
+            delete memoData[selectedDate.toISOString()];
+            updateMemoData(memoData);
+            deleteMarkMemo(selectedDate);
+        }
+
+        function getMemoData() {
+            const storedData = localStorage.getItem('memoData');
+            return storedData ? JSON.parse(storedData) : {};
+        }
+
+        function updateMemoData(memoData) {
+            localStorage.setItem('memoData', JSON.stringify(memoData));
+        }
+
+        function markMemo(date) {
+            const dateElement = document.querySelectorAll(".date");
+            dateElement.forEach((element) => {
+                const elementDate = new Date(currentYear, currentMonth, parseInt(element.textContent));
+                if (elementDate.getTime() === date.getTime()) {
+                    element.innerHTML += '<span style="color: red; font-size: 10px;"> ●</span>';
                 }
-                
-
             });
         }
 
-        function getPriorityClass(p){
-            switch(p){
-                case "낮음":
-                    return "lowp";
-                case "보통":
-                    return "normalp";
-                case "높음":
-                    return "highp";
-                case "아주높음":
-                    return "vhighp";
-                default:
-                    return "";
-            }
+        function deleteMarkMemo(date) {
+            const dateElement = document.querySelectorAll(".date");
+            dateElement.forEach((element) => {
+                const elementDate = new Date(currentYear, currentMonth, parseInt(element.textContent));
+                if (elementDate.getTime() === date.getTime()) {
+                    const mark = element.querySelector("span");
+                    if (mark) {
+                        mark.remove();
+                    }
+                }
+            });
         }
 
+        prevBtn.addEventListener("click", () => {
+            resetSelectedDate();
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            createCalendar();
+        });
 
+        nextBtn.addEventListener("click", () => {
+            resetSelectedDate();
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            createCalendar();
+        });
+
+        saveBtn.addEventListener("click", function () {
+            saveMemo();
+            memoBox.style.display = "none";
+        });
+
+        deleteBtn.addEventListener("click", function () {
+            deleteMemo();
+            memoBox.style.display = "none";
+        });
+
+        exitBtn.addEventListener("click", function () {
+            memoBox.style.display = "none";
+        });
+
+        createCalendar();
     </script>
 </body>
 </html>
