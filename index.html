@@ -1,246 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
-
+    <title>미니인턴</title>
+    <script>
+        s
+    </script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            display: flex;
             align-items: center;
             justify-content: center;
             width: 100vw;
             height: 100vh;
         }
-
-        .main {
-            width: 400px;
-            height: 300px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .calendarHead {
+        .menu{
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid;
         }
 
-        .calendarDays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            border: solid;
+        .bmenu{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid;
         }
 
-        .day {
-            padding: 5px;
-            text-align: center;
-            border: solid;
+
+        .leftmenu{
+            display: flex;
+            list-style: none;
+            padding-left: 0;
         }
 
-        .calendarDate {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            grid-gap: 5px;
+        .leftmenu li{
+            padding: 8px 12px;
         }
 
-        .date {
-            cursor: pointer;
-            padding: 5px;
-            position: relative;
+        .rightmenu{
+            list-style: none;
+            display: flex;
         }
 
-        .memo {
+        .rightmenu li{
+            padding: 8px 12px;
+        }
+
+    
+        .first{
+            display: flex;
             margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        .second{
+            display: flex;
+            flex-direction:column;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .third{
+            display: flex;
             border: solid;
-            display: none;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
         }
 
-        .memo-buttons {
-            margin-top: 10px;
+        .forth{
+            display: flex;
+            flex-direction:column;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        .fifth{
+            display: flex;
+            border: solid;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
         }
 
-        .selected {
-            border: 2px solid red;
+        .sixth{
+            display: flex;
+            flex-direction:column;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
         }
+
+        
+        .seventh{
+            display: flex;
+            flex-direction:column;
+            margin-top: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        
+        .DIV{
+            border: solid;
+            margin: 10px;
+        }
+
+        #fLeft{
+            background-image: url(".\intenImage\main_img_1.jpg");
+            background-size: contain;
+            height: 300px;
+            width: 500px;
+        }
+
+        #fRight{
+            height: 300px;
+            width: 200px;
+        }
+
+        .Line{
+            display: flex;
+        }
+        .LineBox{
+            border: solid;
+            margin: 10px;
+        }
+        
+        #foBody{
+            display: flex;
+        }
+
+        .fLine{
+            flex-direction:column;
+        }
+
+
+
     </style>
 </head>
 <body>
-    <div class="main">
-        <div class="calendarHead">
-            <button id="prevBtn">이전</button>
-            <h1 id="YearMonth"></h1>
-            <button id="nextBtn">다음</button>
-        </div>
-        <div class="calendarDays">
-            <div class="day">일</div>
-            <div class="day">월</div>
-            <div class="day">화</div>
-            <div class="day">수</div>
-            <div class="day">목</div>
-            <div class="day">금</div>
-            <div class="day">토</div>
-        </div>
-        <div class="calendarDate" id="calendarDates"></div>
+    <div class="top">
+        <nav class="menu">
+            <ul class="leftmenu">
+                <li >미니인턴메인</li>
+                <li>미니인턴</li>
+                <li>스킬업</li>
+                <li>M클래스</li>
+                <li>채용관</li>
+                <li>해피폴리오</li>
+            </ul>
+            <ul class="rightmenu">
+                <li>서비스소개</li>
+                <li>회원가입</li>
+                <li>로그인</li>
+                <li>기업회원</li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div class="first">
+        <div class="DIV" id="fLeft">최대한의 효율로 직무경험을 쌓아보세요</div>
+        <div class="DIV" id="fRight">여러분이 찾아 헤매던 취업 준비 자료들</div>
     </div>
 
-    <div class="memo" id="memoBox">
-        <textarea id="memoText" placeholder="메모를 입력하세요."></textarea>
-        <div class="memo-buttons">
-            <button id="saveBtn">저장</button>
-            <button id="deleteBtn">삭제</button>
-            <button id="exitBtn">나가기</button>
+    <div class="second">
+        <div class = Sec id="sHead">
+            <div><b style="font-style: solid;">미니인턴으로 취업하세요<img src="C:\we3km\intenImage\물음표.png" alt="물음표"></b></div>
+            <icon></icon>
+            <div style="font-size: small;">이제 집, 학교, 도서관, 카페에서 인턴십을 경험하고, 실무역량평가로 취업하세요</div>
+        </div>
+        <div class = Sec id="sBody">
+            <div class="Line">
+                <div class="LineBox">상상우리</div>
+                <div class="LineBox">펀딩포유</div>
+                <div class="LineBox">행인</div>
+                <div class="LineBox">어라운드바디</div>
+            </div>
+            <div class="Line">
+                <div class="LineBox">트리앤씨</div>
+                <div class="LineBox">구름맨션</div>
+                <div class="LineBox">원투라인</div>
+                <div class="LineBox">블루라이언즈</div>
+            </div>
         </div>
     </div>
 
-    <script>
-        const calendarDates = document.getElementById("calendarDates");
-        const YearMonth = document.getElementById("YearMonth");
-        const prevBtn = document.getElementById("prevBtn");
-        const nextBtn = document.getElementById("nextBtn");
-        const memoBox = document.getElementById("memoBox");
-        const memoText = document.getElementById("memoText");
-        const saveBtn = document.getElementById("saveBtn");
-        const deleteBtn = document.getElementById("deleteBtn");
-        const exitBtn = document.getElementById("exitBtn");
+    <div class="third">서비스 런칭</div>
+    
+    <div class="forth">
+        <div class = For id="foHead">
+            <div>채용중인 기업을 확인하세요</div>
+        </div>
+        <div class = For id="foBody">
+            <div class="fLine">
+                <div class="LineBox">인플루디오</div>
+                <div class="LineBox">유닛블랙</div>
+                <div class="LineBox">버즈빌</div>
+                <div class="LineBox">왓섭</div>
+            </div>
+            <div class="fLine">
+                <div class="LineBox">인플루디오</div>
+                <div class="LineBox">유닛블랙</div>
+                <div class="LineBox">왓섭</div>
+                <div class="LineBox">유닛블랫</div>
+            </div>
+        </div>
+    </div>
 
-        const today = new Date();
-        let currentMonth = today.getMonth();
-        let currentYear = today.getFullYear();
+    <div class="fifth">헤드헌팅설정</div>
 
-        let selectedDate = null;
+    <div class="sixth">
+        <div class = Six id="siHead">
+            <div>M클래스를 신청하세요</div>
+        </div>
+        <div class = Six id="siBody">
+            <div class="Line">
+                <div class="LineBox">2024리뉴얼 취준</div>
+                <div class="LineBox">취업스킬</div>
+                <div class="LineBox">기업분석</div>
+                <div class="LineBox">멘토링</div>
+            </div>
+        </div>
+    </div>
 
-        function createCalendar() {
-            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-            const datesOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            const startDayOfMonth = firstDayOfMonth.getDay();
-            YearMonth.textContent = `${currentYear}년 ${currentMonth + 1}월`;
+    <div class="seventh">
+        <div class = Sev id="seHead">
+            <div>해피폴리오로 취업정보를 받으세요</div>
+        </div>
+        <div class = Sev id="seBody">
+            <div class="Line">
+                <div class="LineBox">무스펙</div>
+                <div class="LineBox">공공기관</div>
+                <div class="LineBox">대기업</div>
+                <div class="LineBox">비전공자</div>
+            </div>
+        </div>
+    </div>
 
-            calendarDates.innerHTML = "";
+    <div class="bottom">
+        <nav class="bmenu">
+            <ul class="leftmenu">
+                <li >미니인턴메인</li>
 
-            for (let i = 0; i < startDayOfMonth; i++) {
-                const emptyDate = document.createElement("div");
-                emptyDate.classList.add("date", "empty");
-                calendarDates.appendChild(emptyDate);
-            }
-
-            for (let i = 1; i <= datesOfMonth; i++) {
-                const dateElement = document.createElement("div");
-                dateElement.classList.add("date");
-                dateElement.textContent = i;
-                calendarDates.appendChild(dateElement);
-
-                dateElement.addEventListener("click", function () {
-                    resetSelectedDate();
-                    selectedDate = new Date(currentYear, currentMonth, i);
-                    showMemoBox();
-                    showMemoData(selectedDate);
-                    dateElement.classList.add("selected");
-                });
-            }
-        }
-
-        function resetSelectedDate() {
-            const selected = document.querySelector('.date.selected');
-            if (selected) {
-                selected.classList.remove("selected");
-            }
-        }
-
-        function showMemoBox() {
-            memoBox.style.display = "block";
-        }
-
-        function showMemoData(date) {
-            const memoData = getMemoData();
-            const memoForDate = memoData[date.toISOString()];
-            memoText.value = memoForDate || "";
-        }
-
-        function saveMemo() {
-            const memoData = getMemoData();
-            memoData[selectedDate.toISOString()] = memoText.value;
-            updateMemoData(memoData);
-            markMemo(selectedDate);
-        }
-
-        function deleteMemo() {
-            const memoData = getMemoData();
-            delete memoData[selectedDate.toISOString()];
-            updateMemoData(memoData);
-            deleteMarkMemo(selectedDate);
-        }
-
-        function getMemoData() {
-            const storedData = localStorage.getItem('memoData');
-            return storedData ? JSON.parse(storedData) : {};
-        }
-
-        function updateMemoData(memoData) {
-            localStorage.setItem('memoData', JSON.stringify(memoData));
-        }
-
-        function markMemo(date) {
-            const dateElement = document.querySelectorAll(".date");
-            dateElement.forEach((element) => {
-                const elementDate = new Date(currentYear, currentMonth, parseInt(element.textContent));
-                if (elementDate.getTime() === date.getTime()) {
-                    element.innerHTML += '<span style="color: red; font-size: 10px;"> ●</span>';
-                }
-            });
-        }
-
-        function deleteMarkMemo(date) {
-            const dateElement = document.querySelectorAll(".date");
-            dateElement.forEach((element) => {
-                const elementDate = new Date(currentYear, currentMonth, parseInt(element.textContent));
-                if (elementDate.getTime() === date.getTime()) {
-                    const mark = element.querySelector("span");
-                    if (mark) {
-                        mark.remove();
-                    }
-                }
-            });
-        }
-
-        prevBtn.addEventListener("click", () => {
-            resetSelectedDate();
-            currentMonth--;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            }
-            createCalendar();
-        });
-
-        nextBtn.addEventListener("click", () => {
-            resetSelectedDate();
-            currentMonth++;
-            if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
-            createCalendar();
-        });
-
-        saveBtn.addEventListener("click", function () {
-            saveMemo();
-            memoBox.style.display = "none";
-        });
-
-        deleteBtn.addEventListener("click", function () {
-            deleteMemo();
-            memoBox.style.display = "none";
-        });
-
-        exitBtn.addEventListener("click", function () {
-            memoBox.style.display = "none";
-        });
-
-        createCalendar();
-    </script>
+            </ul>
+            <ul class="rightmenu">
+                <li>이용약관</li>
+                <li>개인정보취급방침</li>
+                <li>새로운소식</li>
+                <li>자주하는질문</li>
+            </ul>
+        </nav>
+    </div>
+    
 </body>
 </html>
