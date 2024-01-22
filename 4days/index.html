@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .main {
+            width: 400px;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendarHead {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calendarDays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border: solid;
+        }
+
+        .day {
+            padding: 5px;
+            text-align: center;
+            border: solid;
+        }
+
+        .calendarDate {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 5px;
+        }
+
+        .date {
+            cursor: pointer;
+            padding: 5px;
+            position: relative;
+        }
+
+        .memo {
+            margin-top: 20px;
+            border: solid;
+            display: none;
+        }
+
+        .memo-buttons {
+            margin-top: 10px;
+        }
+
+        .selected {
+            border: 2px solid red;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="calendarHead">
+            <button id="prevBtn">이전</button>
+            <h1 id="YearMonth"></h1>
+            <button id="nextBtn">다음</button>
+        </div>
+        <div class="calendarDays">
+            <div class="day">일</div>
+            <div class="day">월</div>
+            <div class="day">화</div>
+            <div class="day">수</div>
+            <div class="day">목</div>
+            <div class="day">금</div>
+            <div class="day">토</div>
+        </div>
+        <div class="calendarDate" id="calendarDates"></div>
+    </div>
+
+    <div class="memo" id="memoBox">
+        <textarea id="memoText" placeholder="메모를 입력하세요."></textarea>
+        <div class="memo-buttons">
+            <button id="saveBtn">저장</button>
+            <button id="deleteBtn">삭제</button>
+            <button id="exitBtn">나가기</button>
+        </div>
+    </div>
+
+    <script>
+        const calendarDates = document.getElementById("calendarDates");
+        const YearMonth = document.getElementById("YearMonth");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const memoBox = document.getElementById("memoBox");
+        const memoText = document.getElementById("memoText");
+        const saveBtn = document.getElementById("saveBtn");
+        const deleteBtn = document.getElementById("deleteBtn");
+        const exitBtn = document.getElementById("exitBtn");
+
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
+
+        let selectedDate = null;
+
+        function createCalendar() {
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            const datesOfMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const startDayOfMonth = firstDayOfMonth.getDay();
+            YearMonth.textContent = `${currentYear}년 ${currentMonth + 1}월`;
+
+            calendarDates.innerHTML = "";
+
+            for (let i = 0; i < startDayOfMonth; i++) {
+                const emptyDate = document.createElement("div");
+                emptyDate.classList.add("date", "empty");
+                calendarDates.appendChild(emptyDate);
+            }
+
+            for (let i = 1; i <= datesOfMonth; i++) {
+                const dateElement = document.createElement("div");
+                dateElement.classList.add("date");
+                dateElement.textContent = i;
+                calendarDates.appendChild(dateElement);
+
+                dateElement.addEventListener("click", function () {
+                    resetSelectedDate();
+                    selectedDate = new Date(currentYear, currentMonth, i);
+                    showMemoBox();
+                    showMemoData(selectedDate);
+                    dateElement.classList.add("selected");
+                });
+            }
+        }
+
+        function resetSelectedDate() {
+            const selected = document.querySelector('.date.selected');
+            if (selected) {
+                selected.classList.remove("selected");
+            }
+        }
+
+        function showMemoBox() {
+            memoBox.style.display = "block";
+        }
+
+        function showMemoData(date) {
+            const memoData = getMemoData();
+            const memoForDate = memoData[date.toISOString()];
+            memoText.value = memoForDate || "";
+        }
+
+        function saveMemo() {
+            const memoData = getMemoData();
+            memoData[selectedDate.toISOString()] = memoText.value;
+            updateMemoData(memoData);
+            markMemo(selectedDate);
+        }
+
+        function deleteMemo() {
+            const memoData = getMemoData();
+            delete memoData[selectedDate.toISOString()];
+            updateMemoData(memoData);
+            deleteMarkMemo(selectedDate);
+        }
+
+        function getMemoData() {
+            const storedData = localStorage.getItem('memoData');
+            return storedData ? JSON.parse(storedData) : {};
+        }
+
+        function updateMemoData(memoData) {
+            localStorage.setItem('memoData', JSON.stringify(memoData));
+        }
+
+        function markMemo(date) {
+            const dateElement = document.querySelectorAll(".date");
+            dateElement.forEach((element) => {
+                const elementDate = new Date(currentYear, currentMonth, parseInt(element.textContent));
+                if (elementDate.getTime() === date.getTime()) {
+                    element.innerHTML += '<span style="color: red; font-size: 10px;"> ●</span>';
+                }
+            });
+        }
+
+        function deleteMarkMemo(date) {
+            const dateElement = document.querySelectorAll(".date");
+            dateElement.forEach((element) => {
+                const elementDate = new Date(currentYear, currentMonth, parseInt(element.textContent));
+                if (elementDate.getTime() === date.getTime()) {
+                    const mark = element.querySelector("span");
+                    if (mark) {
+                        mark.remove();
+                    }
+                }
+            });
+        }
+
+        prevBtn.addEventListener("click", () => {
+            resetSelectedDate();
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            createCalendar();
+        });
+
+        nextBtn.addEventListener("click", () => {
+            resetSelectedDate();
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            createCalendar();
+        });
+
+        saveBtn.addEventListener("click", function () {
+            saveMemo();
+            memoBox.style.display = "none";
+        });
+
+        deleteBtn.addEventListener("click", function () {
+            deleteMemo();
+            memoBox.style.display = "none";
+        });
+
+        exitBtn.addEventListener("click", function () {
+            memoBox.style.display = "none";
+        });
+
+        createCalendar();
+    </script>
+</body>
+</html>

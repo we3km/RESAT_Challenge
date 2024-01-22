@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <style>
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sliderContainer{
+            position: relative;
+            overflow: hidden;
+            width: 50%;
+            margin: auto;  
+            border-radius: 2cap;
+            border: solid #ccc;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .sliderBox{
+            display: flex; 
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide{
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .slide img{   
+            width: 100%;
+            height: 100%;
+        }
+
+        .arrow{
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 50px;
+            cursor: pointer;
+        }
+
+        .arrow.prev{
+            left: 10px;
+        }
+
+        .arrow.next{
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sliderContainer">
+        <div class="sliderBox">
+            <div class="slide"><img src="./sliderImage/Image1.png" alt="Image 1"></div>
+            <div class="slide"><img src="./sliderImage/Image2.png" alt="Image 2"></div>
+            <div class="slide"><img src="./sliderImage/Image3.png" alt="Image 3"></div>
+            <div class="slide"><img src="./sliderImage/Image4.png" alt="Image 4"></div>
+        </div>
+        <div class="arrow prev" onclick="prevSlide()">&#9665;</div>
+        <div class="arrow next" onclick="nextSlide()">&#9655;</div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slide = document.querySelectorAll('.slide');
+        const totalSlides = slide.length;
+
+        function showSlide(index){
+            if(index < 0){
+                currentIndex = totalSlides - 1;
+            } else if(index >= totalSlides){
+                currentIndex = 0;
+            } else{
+                currentIndex = index;
+            }
+
+            const translateValue = -currentIndex * 100 + '%';
+            document.querySelector('.sliderBox').style.transform = 'translateX(' + translateValue +')';
+        }
+
+        function prevSlide(){
+            showSlide(currentIndex - 1);
+        }
+
+        function nextSlide(){
+            showSlide(currentIndex + 1);
+        }
+    </script>
+</body>
+</html>
