@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반응형 네비게이션 메뉴바</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }        
+       .nav{
+            display: flex;
+            background-color: chartreuse;
+            color: white;
+            font-weight: bolder;
+        }
+        .menu{
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li{
+            padding: 8px 50px;
+            cursor: pointer;
+        }
+
+        .body{
+            background-color: chartreuse;
+            color: white;
+            font-weight: bolder;
+        }
+
+        .bmenu{
+            list-style: none; 
+            display: none;
+        }
+
+        .bmenu li{
+            padding: 30px 8px;
+            cursor: pointer;
+        }
+        .burger{
+            padding: 8px;
+            display: none;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 700px) {
+            .menu li{
+                display: none;
+            }
+
+            .burger{
+                display: block;
+            }
+
+            .bmenu.active{
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        @media screen and (min-width: 700px) {
+            .bmenu{
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <nav class="nav">
+            <ul class="menu">
+                <li>Home</li>
+                <li>About</li>
+                <li>Contact</li>
+                <li>FAQ</li>
+            </ul>
+            <div class="burger" onclick="toggleBmenu()">&#9776</div>
+        </nav>
+    </div>
+    <div class="body">
+        <ul class="bmenu">
+            <li>Home</li>
+            <li>About</li>
+            <li>Contact</li>
+            <li>FAQ</li>
+        </ul>
+    </div>
+    <script>
+        function toggleBmenu(){
+            let bmenu = document.querySelector('.bmenu');
+            bmenu.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+
