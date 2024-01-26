@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <style>
+        body{
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #loginContainer{
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            border-radius: 2cap;
+            border: solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background-color: darkgrey;
+            width: 500px;
+            height: 300px;
+            margin-top: 200px;
+        }
+
+        #inputContainer{
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            width: 300px;
+            height: 100px;
+            flex-direction: column;
+            
+        }
+
+        .input{
+            border: solid #ccc;
+            border-radius: 2cap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #btnContainer{
+            margin-top: 30px;
+        }
+        #loginBtn{
+            background-color:dimgray ;
+            border-radius: 2cap;
+            border: solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: none;
+            width: 120px;
+            height: 40px;
+            color: white;
+            font-weight: bold;
+        }
+
+        #messageBox{
+            margin-top: 20px;
+            color: white;
+            background-color: dimgray;
+            border-radius: 2cap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+            font-weight: bold;
+            font-size: small;
+            text-align: center;
+            width: 60%;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="loginContainer">
+        <div id="inputContainer">
+            <input type="text" class= "input" id="ID" placeholder="아이디"/>
+            <br>
+            <input type="text" class= "input" id="PW" placeholder="비밀번호"/>
+        </div>
+        <div id="messageBox"></div>
+        <div id="btnContainer">
+            <button id="loginBtn" onclick="enterLogin()">로그인</button>
+        </div>
+    </div>
+
+    <script>
+        function enterLogin(){
+            const userID = "ID123";
+            const userPW = "PW123";
+            const inputID = document.getElementById('ID').value;
+            const inputPW = document.getElementById('PW').value;
+            if (inputID === '' || inputPW ===''){
+                showMessage('아이디 또는 비밀번호를 입력하세요.');
+            } else if(inputID !== userID || inputPW !== userPW){
+                showMessage('아이디 혹은 비밀번호가 잘못 입력되었습니다.');
+            } else{
+                showMessage('로그인이 되었습니다.')
+            }
+        }
+
+        function showMessage(message){
+            const resultMessage = document.getElementById('messageBox');
+            resultMessage.textContent = message;
+            alert(message);
+        }
+    </script>
+</body>
+</html>
